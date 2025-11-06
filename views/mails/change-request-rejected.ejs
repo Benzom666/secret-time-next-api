@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <title> Change Request Rejected</title>
+  <!-- css -->
+  <style type="text/css">
+    body {
+      margin: 0;
+      background-color: white;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #fff;
+      padding-bottom: 60px;
+    }
+
+    .main {
+      background-color: #F2F5F7;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 650px;
+      border-spacing: 0;
+      font-family: 'Roboto';
+      color: #fff;
+    }
+
+    .column {
+      margin: 2rem auto;
+    }
+
+    .two-column {
+      text-align: center;
+    }
+
+    .two-column .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+    }
+
+    .main-content-btn-section {
+      text-align: center;
+    }
+
+    .footer-icons {
+      text-align: start;
+    }
+
+    .column_1 {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      margin: 5px auto;
+    }
+
+    .footer-text-2 {
+      text-align: start;
+    }
+
+    #main_header_mob {
+      display: none;
+    }
+
+    #main_header {
+      display: block;
+    }
+
+    @media only screen and (max-width:480px) {
+      #main_header {
+        display: none;
+      }
+
+      #main_header_mob {
+        display: block;
+      }
+
+      .heading,
+      h2 {
+        width: 220px;
+        margin: 1rem auto 0 auto;
+      }
+
+      .main-text {
+        width: 231px !important;
+        margin: 1rem auto;
+      }
+
+      .column_1 {
+        width: auto;
+        max-width: initial;
+      }
+
+      .footer-icons,
+      .footer-text-1,
+      .footer-text-2 {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <center class="wrapper">
+    <table class="main" width="100%">
+      <!-- Logo section -->
+      <tr>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="one-column">
+                <table class="column" style="margin:0 auto; width:100%">
+                  <tr>
+                    <td style="text-align: center;">
+                      <a>
+                        <img id="main_header" src="<%=process.env.APP_URL%>/Image/Frame43075_old.png" width="100%" height="220px" alt="logo" />
+                      </a>
+                      <a>
+                        <img id="main_header_mob" src="<%=process.env.APP_URL%>/Image/Frame43075.png" width="100%" height="220px" alt="logo" />
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Main-text -->
+      <tr>
+        <td>
+          <h2 class="heading" style=" font-family: 'Roboto';font-style: normal;font-weight: 800;
+                    font-size: 15px;line-height: 18px;text-align: center;color: #1A415C;">
+            Change Request Rejected, Please Try Again!
+          </h2>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div style=" width: 443px;margin: 1.5rem auto;">
+            <p style="font-family: 'Roboto';font-style: normal;font-weight: 400;
+                        font-size: 11px;line-height: 13px;text-align: center;color: #3A5E77;">
+              Hello <%= userName %>,
+            </p>
+            <p class="main-text" style="font-family: 'Roboto';font-style: normal;font-weight: 400;
+                        font-size: 11px;line-height: 13px;text-align: center;color: #3A5E77;">
+              Your recent Change Requests have been denied. Unfortunately, these requests didn't meet our company's policies. Please try again.</br>
+              <%= message %>
+            </p>
+          </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <a href="<%= loginUrl %>/auth/login">
+            <button style="width: 179px;height: 44px;background: #F24462;cursor: pointer;
+                        border-radius: 15px; border:none;margin: 1rem auto 3rem auto;
+                        color: #fff; font-size: 14px;">Edit Now</button>
+          </a>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td style="background-color:black;padding: 50px 10px;">
+          <table width="100%">
+            <tr>
+              <td class="two-column">
+                <table class="column_1" style="vertical-align: bottom; padding: 10px 102px;">
+                  <tr>
+                    <td>
+                      <a> <img src="<%=process.env.APP_URL%>/Image/FooterLogo.png" alt="ls-logo-footer" style="height:46px ;width:64px" /></a>
+                    </td>
+                  </tr>
+                </table>
+                <table class="column_1">
+                  <tr>
+                    <td class="footer-icons">
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Twitter.png" alt='twitter-img' style="height: 23px; text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Insta.png" alt='inst-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/FB.png" alt='fb-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Tiktok.png" alt='tictok-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-1' style="padding-top:6px;  font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                                        color: #FFFFFF;text-align: start;">
+                      FAQ | Safety Tips | Terms | Privacy Settings | Our Story
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-2' style="padding-top:6px;font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;
+                                        line-height: 13px;color: rgba(255, 255, 255, 0.6);">
+                      © 2022 Le Society | All Rights Reserved
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <title>Welcome GentalMan </title>
+  <!-- Css -->
+  <style type="text/css">
+    body {
+      margin: 0;
+      background-color: white;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #fff;
+      padding-bottom: 60px;
+    }
+
+    .main {
+      background-color: #F2F5F7;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 650px;
+      border-spacing: 0;
+      font-family: 'Roboto';
+      color: #fff;
+    }
+
+    .column {
+      margin: 2rem auto;
+    }
+
+    .two-column {
+      text-align: center;
+    }
+
+    .two-column .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+    }
+
+    .main-content-btn-section {
+      text-align: center;
+    }
+
+    .footer-icons {
+      text-align: start;
+    }
+
+    .column_1 {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      margin: 5px auto;
+    }
+
+    .footer-text-2 {
+      text-align: start;
+    }
+
+    .main_content_card {
+      width: 556px;
+      background: linear-gradient(168.08deg, #F2F5F7 4.24%, #E6EBEE 94.68%);
+      box-shadow: 6px 6px 10px #D3DADE, -6px -6px 10px 1px rgba(255, 255, 255, 0.6);
+      border-radius: 47px;
+      margin: 2rem auto;
+    }
+
+    .card_ques_ans_section {
+      margin: 0.5rem 1rem;
+    }
+
+    .qestion {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 18px;
+      color: #3A5E77;
+      padding: 0.5rem 2rem;
+    }
+
+    .answer {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 13px;
+      color: #3A5E77;
+      padding: 0 2rem;
+      text-align: start;
+    }
+
+
+    ul {
+      list-style: disc;
+      list-style-position: inside;
+      color: #3A5E77;
+      padding-left: 30px;
+    }
+
+    li {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 13px;
+      color: #3A5E77;
+    }
+
+    .answer-inside-heading {
+      padding: 0 2rem;
+    }
+
+    .card-bottom-text,
+    p {
+      padding: 10px 15px;
+      text-align: start;
+    }
+
+    @media only screen and (max-width:480px) {
+      .main_content_card {
+        width: 312px !important;
+      }
+
+      .qestion {
+        padding: 0 !important;
+      }
+
+      .answer {
+        padding: 0 !important;
+      }
+
+      .answer-inside-heading {
+        padding: 0 !important;
+      }
+
+      ul {
+        padding-left: 0 !important;
+      }
+
+      .card-bottom-text,
+      p {
+        padding: 8px;
+        text-align: center !important;
+      }
+
+      .column_1 {
+        width: auto;
+        max-width: initial;
+      }
+
+      .footer-icons,
+      .footer-text-1,
+      .footer-text-2 {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <center class="wrapper">
+    <table class="main" width="100%">
+      <!-- Logo section -->
+      <tr>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="one-column">
+                <table class="column">
+                  <tr>
+                    <td style="text-align: center;">
+                      <a>
+                        <img src="<%=process.env.APP_URL%>/Image/Group238_1.png" alt="main-header-img" />
+                      </a>
+                    </td>
+
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- Banner Image -->
+      <tr>
+        <td>
+          <img id="main_Image_web" src="<%=process.env.APP_URL%>/Image/Rectangle_16958.png" alt="background-img" width="650px" style="max-width: 100%;" />
+        </td>
+      <tr>
+        <td>
+          <div class="main-heading">
+            <h1 style="font-family: 'Roboto';font-style: normal;font-weight: 800;
+                        font-size: 45px;line-height: 53px;text-align: center;color: #1A415C; margin: 10px auto 0 auto;">
+              Welcome To</h1>
+
+            <h1 style="font-family: 'Roboto';font-style: normal;font-weight: 800;
+                        font-size: 45px; line-height: 53px;text-align: center;color: #1A415C;
+                        margin: 0px auto 20px auto;">Le Society!</h1>
+
+            <h3 class="sub_heading" style="font-family: 'Roboto';font-style: normal;
+                        font-weight: 600; font-size: 14px; line-height: 16px;text-align: center;
+                        color: #3A5E77; width: 70%;margin: 0 auto;">
+              Congratulations, you’ve successfully passed our registration and screening process and now
+              have full access to Le Society’s exclusive portfolio of single ladies who are ready to
+              connect.
+            </h3>
+            <h3 class="sub_heading" style="font-family: 'Roboto';font-style: normal;
+                        font-weight: 600; font-size: 14px; line-height: 16px;text-align: center;
+                        color: #3A5E77;margin: 10px auto;">
+              THE NEXT STEP
+            </h3>
+          </div>
+        </td>
+
+      </tr>
+      <tr>
+        <td>
+          <div class="main-content-text">
+            <p style="font-family: 'Roboto';font-style: normal;font-weight: 400;
+                        font-size: 11px;line-height: 16px;text-align: center;color: #3A5E77; width: 380px; margin: 1rem auto;">
+              To get started, customize your profile to showcase your personality and interests to let
+              potential matches know a little more about you. Your privacy is our top priority at Le
+              Society, and your profile will only become visible to women who YOU choose to connect with.
+            </p>
+            <p style="font-family: 'Roboto';font-style: normal;font-weight: 400;
+                        font-size: 11px;line-height: 16px;text-align: center;color: #3A5E77;width: 380px; margin: 1rem auto;">
+              Meet your dream girl faster than ever before. Our exclusive female members have already
+              listed their preferred dates and experiences making it easier for you to skip the small talk
+              and set a date to meet the woman of your dreams.
+            </p>
+            <p style="font-family: 'Roboto';font-style: normal;font-weight: 400;
+                        font-size: 16px;line-height: 16px;text-align: center;color: #3A5E77;">
+              Log in to connect!
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr style="text-align: center;">
+        <td>
+          <a href="<%= loginUrl %>/auth/login" class="main-content-btn-section">
+            <button type="button" style="width: 179px; height: 44px; background: #F24462;border-radius: 15px;margin: 0.5rem auto; border: none; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;">
+              Find Date Now
+            </button>
+          </a>
+        </td>
+      </tr>
+      </tr>
+      <!-- Main-Card -->
+      <tr>
+        <td>
+          <div class="main_content_card">
+            <h1 style="padding: 1.5rem 0 0 0; font-family: 'Roboto';font-style: normal;
+                        font-weight: 800;font-size: 25px;line-height: 29px;text-align: center;
+                        color: #1A415C;">Frequently Asked Questions:</h1>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">1. Why are the gentlemen’s profiles private?</h3>
+              <p class="answer">We are anticipating a large community of gentlemen with high social
+                classstatus,and by securingtheir profiles we are preventing any member for attempting to
+                commit identity theft, stalking,black mailing, or potentially having their colleagues
+                stumble across their profile. On Le Society our gentlemen get to choose who can see
+                their profile by simply sending amessage to that specific female user.</p>
+            </div>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">2. What are the photo guidelines?</h3>
+              <p class="answer">please follow the rules listed below. Photos that violate the guideline
+                will be denied and your account may be suspended.</p>
+              <div class="answer-inside-text">
+                <h2 class="answer-inside-heading" style="font-size: 11px;line-height: 13px;
+                                    color: #3A5E77">Photos can include:</h2>
+                <ul>
+                  <li>Photos must include yourself.</li>
+                  <li>Couple photos, only if you’re present in the photo.</li>
+                  <li>Houses, Cars, Yachts are allowed if you’re present in the photo.</li>
+                  <li>Fully covered lingerie, underwear and bikini photos. Face must be visible.</li>
+                </ul>
+
+                <h2 class="answer-inside-heading" style="font-size: 11px;line-height: 13px;color: #3A5E77">Things that are not
+                  allowed:</h2>
+                <p style="font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 11px; line-height: 13px;text-align: start; color: #3A5E77; padding: 0 31px;">
+                  It’s important to note that violating the rules below may result in a disabled
+                  account or discontinued use, without warning.</p>
+                <ul>
+                  <li>Nude or sexually explicit photos.</li>
+                  <li>Duplicate photos.</li>
+                  <li>Any photos not featuring yourself. This includes stock/celebrity photos</li>
+                  <li>Extreme Closeup photos- photos focused solely on lips/hands/feet/chest will be
+                    denied
+                  </li>
+                  <li>Improperly rotated or cropped images.</li>
+                  <li>Photos including children.</li>
+                  <li>Photos containing or depicting illegal content.</li>
+                  <li>Copyrighted photos not belonging to you</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">3. I’m having trouble uploading my photos.</h3>
+              <p class="answer">Keep in mind when uploading your photos to only users’ photos with the
+                size…</p>
+            </div>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">4. How do ladies get paid for their date?</h3>
+              <p class="answer">Le Society is a platform intended to establish the terms of the date and
+                does not assist in the exchange of payment.</p>
+            </div>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">5. How long does it take for my account and photos to be approved?</h3>
+              <p class="answer">Normally about 1 hour, but sometimes it can take up to 24hrs. Le Society
+                reviews and approves each profile manually to ensure the quality and sincerity of the
+                members.
+              </p>
+            </div>
+            <div class="card_ques_ans_section">
+              <h3 class="qestion">6. Why was my account suspended?</h3>
+              <p class="answer">Please note that member accounts are suspended for the following reasons:
+              </p>
+              <p class="answer">· A violation of our Terms of Use (see list below).</p>
+              <div class="answer-inside-text">
+                <h2 class="answer-inside-heading" style="font-size: 11px;line-height: 13px;
+                                    color: #3A5E77">Terms of use violations can include:</h2>
+                <ul>
+                  <li>Using the Website as an escort, or using the Service to solicit clients for an
+                    escort service</li>
+                  <li> Asking for money up front or in advance of your date</li>
+                  <li>Abusive, vulgar or sexually explicit language</li>
+                  <li> Suspected fraudulent use of the site and/or a payment method</li>
+                  <li>Reports by other members about your profile or conduct</li>
+                  <li>Using the Website or Service to promote, solicit, or engage in prostitution</li>
+                  <li> Recruiting members for commercial purposes</li>
+                  <li> Posting or sending material that exploits people under the age of 18 in a
+                    sexual or violent manner, or solicits personal information from anyone under 18
+                  </li>
+                  <li>Soliciting passwords, bank information or other personal identifying information
+                    for commercial or unlawful purposes from other users</li>
+                  <li>Posting any incomplete, false, misleading, or inaccurate content about yourself
+                    and/or your profile</li>
+                  <li>Posting any content that is not entirely your own or for which you do not have
+                    full rights to use</li>
+                  <li>Having multiple active accounts</li>
+                  <li>Creating a profile if you are under the age of 18</li>
+                </ul>
+              </div>
+              <div class="card-bottom-text">
+                <p style="font-family: 'Roboto'; font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                                text-align: start;color: #3A5E77;">Our intentions are to
+                  detect and prevent violations, and protect our membercommunity. Please contact our
+                  <span style="font-size: 14px; font-weight: 700;"> Customer Support </span>Team to
+                  see if your account is eligible for restoration.
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td style="background-color:black;padding: 50px 10px;">
+          <table width="100%">
+            <tr>
+              <td class="two-column">
+                <table class="column_1" style="vertical-align: bottom; padding: 10px 102px;">
+                  <tr>
+                    <td>
+                      <a> <img src="<%=process.env.APP_URL%>/Image/FooterLogo.png" alt="ls-logo-footer" style="height:46px ;width:64px" /></a>
+                    </td>
+                  </tr>
+                </table>
+                <table class="column_1">
+                  <tr>
+                    <td class="footer-icons">
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Twitter.png" alt='twitter-img' style="height: 23px; text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Insta.png" alt='inst-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/FB.png" alt='fb-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Tiktok.png" alt='tictok-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-1' style="padding-top:6px;  font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                                        color: #FFFFFF;text-align: start;">
+                      FAQ | Safety Tips | Terms | Privacy Settings | Our Story
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-2' style="padding-top:6px;font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;
+                                        line-height: 13px;color: rgba(255, 255, 255, 0.6);">
+                      © 2022 Le Society | All Rights Reserved
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+pipelines:
+  branches:
+    production:
+      - step:
+          name: Deploy to Production
+          deployment: Production
+          clone:
+            enabled: false
+          script:
+            - pipe: atlassian/ssh-run:0.4.1
+              variables:
+                SSH_USER: $SSH_USER
+                SERVER: $SERVER
+                COMMAND: |
+                  source ~/.nvm/nvm.sh
+                  nvm use
+                  cd /home/node/secret-time-next-api
+                  git pull origin production
+                  npm install
+                  npx forever restart 0
+                  echo "Backend Production Deployed"

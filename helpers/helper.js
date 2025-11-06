@@ -1,0 +1,585 @@
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
+const ejs = require("ejs");
+const fs = require("fs");
+const mongoose = require("mongoose");
+const mails = require("./mails");
+const moment = require("moment-timezone");
+
+exports.errorResponse = (errors, status = 500, message = "Something went wrong.") => ({
+    data: errors instanceof ReferenceError ? errors.message : errors,
+    status,
+    error: true,
+    message,
+});
+
+exports.successResponse = (data, status = 200, message = "ok") => ({
+    data,
+    status,
+    error: false,
+    message,
+});
+
+exports.sendEmailNewSignup = (mailData) => {
+    if (mailData.template && mailData.template == "") return false;
+
+    ejs.renderFile(mailData.template, mailData, (err, data) => {
+        if (err) {
+            console.warn("Email template error", { err });
+        } else {
+            // setup email data with unicode symbols
+            const mailOptions = {
+                from: process.env.MAIL_ID_FROM, // sender address
+                to: mailData.to ? mailData.to : process.env.MAIL_ID_TO,
+                subject: mailData.subject ? mailData.subject : "Secret Time",
+                html: data,
+            };
+            try {
+                // send mail with defined transport object
+                mails.sendMail(mailOptions, (error) => {
+                    if (error) {
+                        console.warn("Email sending error", {
+                            err: error,
+                            from: mailOptions.from,
+                            to: mailOptions.to,
+                            subject: mailOptions.subject,
+                            mailData,
+                        });
+
+                        // return error;
+                    } else {
+                        console.info("Email sending success", {
+                            from: mailOptions.from,
+                            to: mailOptions.to,
+                            subject: mailOptions.subject,
+                            mailData,
+                        });
+                    }
+                });
+            } catch (error) {
+                console.warn(" [CATCH] Email sending error", {
+                    err: error,
+                    from: mailOptions.from,
+                    to: mailOptions.to,
+                    subject: mailOptions.subject,
+                    mailData,
+                });
+            }
+        }
+    });
+};
+
+exports.influencerResponse = (user) => ({
+    email: user.email,
+    name: user.name,
+    source: user.source,
+    code: user.code,
+    promo: user.promo,
+    status: user.status,
+    count: user.count,
+    active: user.active,
+    updated_at: user.updated_at,
+    created_at: user.created_at,
+});
+
+exports.userResponse = (user) => ({
+    id: user._id,
+    email: user.email,
+    role: user.role,
+    step_completed: user.step_completed,
+    images: user.images,
+    location: user.location,
+    user_name: user.user_name,
+    age: user.age,
+    gender: user.gender,
+    body_type: user.body_type,
+    ethnicity: user.ethnicity,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    tagline: user.tagline,
+    description: user.description,
+    height: user.height,
+    is_smoker: user.is_smoker,
+    max_education: user.max_education,
+    document: user.document,
+    selfie: user.selfie,
+    verified: user.verified,
+    status: user.status,
+    request_change_fired: user.request_change_fired,
+    requested_date: user.requested_date,
+    occupation: user.occupation,
+    email_verified: user.email_verified,
+    documents_verified: user.documents_verified,
+    tag_desc_verified: user.tag_desc_verified,
+    image_verified: user.image_verified,
+    un_verified_description: user.un_verified_description,
+    un_verified_tagline: user.un_verified_tagline,
+    un_verified_images: user.un_verified_images,
+    verified_screen_shown: user.verified_screen_shown,
+    created_at: moment(user.created_at).tz("America/Toronto").format(),
+    blocked_users: Array.from(new Set(user.blocked_users)),
+    image_warning_popup: user.image_warning_popup,
+    categatoryName: user.categatoryName,
+    categatoryId: user.categatoryId,
+    aspirationName: user.aspirationName,
+    aspirationId: user.aspirationId,
+    first30DaysDateCreateTime: user.first30DaysDateCreateTime,
+});
+
+exports.dateResponse = (date) => ({
+    id: date._id,
+    email: date.email,
+    is_new: date.is_new,
+    date_status: date.date_status,
+    location: date.location,
+    country_code: date.country_code,
+    country: date.country,
+    province: date.province,
+    standard_class_date: date.standard_class_date,
+    middle_class_dates: date.middle_class_dates,
+    executive_class_dates: date.executive_class_dates,
+    date_length: date.date_length,
+    price: date.price,
+    date_details: date.date_details,
+    user_name: date.user_name,
+    verification_docs: date.verification_docs,
+});
+
+exports.customerResponse = (customer) => ({
+    id: customer._id,
+    company_id: customer.company_id,
+    title: customer.title || "N/A",
+    email: customer.email,
+    address_line_1: customer.address_line_1,
+    address_line_2: customer.address_line_2,
+    city: customer.city,
+    country_code: customer.country_code,
+    country: customer.country,
+    postcode: customer.postcode,
+    reference: customer.reference,
+});
+
+exports.imageFilter = function (req, file, cb) {
+    // Accept images only
+    console.log("Image Filter called", file);
+    if (!file.originalname) {
+        req.fileValidationError = "Image field is required!";
+        cb(null, false);
+    }
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {
+        req.fileValidationError = "Only jpg|jpeg|png file formats are allowed.";
+        cb(null, false);
+    }
+    cb(null, true);
+};
+
+// -> Import CSV File to MySQL database
+exports.importCsvData2MySQL = (filePath) => {
+    const stream = fs.createReadStream(filePath);
+    const csvData = [];
+    const csvStream = csv
+        .parse({ headers: true })
+        .on("data", (data) => {
+            data.company_id = new mongoose.Types.ObjectId(data.company_id);
+
+            csvData.push(data);
+        })
+        .on("end", () => {
+            // Remove Header ROW
+            csvData.shift();
+            console.log(csvData);
+            const customer = new Customer(csvData);
+
+            customer.save((err, createdCustomer) => {
+                if (err) {
+                    console.log("CUSTOMER CREATION ERROR", err.message);
+                }
+
+                console.log(createdCustomer);
+            });
+            // delete file after saving to MySQL database
+            // -> you can comment the statement to see the uploaded CSV file.
+            fs.unlinkSync(filePath);
+        });
+    stream.pipe(csvStream);
+};
+
+exports.contractorResponse = (contractor) => ({
+    id: contractor._id,
+    company_id: contractor.company_id,
+    service_id: contractor.service_id,
+    name: contractor.name,
+    email: contractor.email,
+    address_line_1: contractor.address_line_1,
+    address_line_2: contractor.address_line_2,
+    city: contractor.city,
+    country_code: contractor.country_code,
+    country: contractor.country,
+    postcode: contractor.postcode,
+    reference: contractor.reference,
+});
+
+exports.s3ImageResponse = function (s3Object) {
+    const files = [];
+
+    s3Object.map((img) => {
+        files.push({
+            url: img.location,
+            mimetype: img.mimetype,
+            fileName: img.originalname,
+        });
+    });
+
+    return files;
+};
+
+/**
+ * Iterate through from startDate and endDate and
+ * update data if dosn't exists within range.
+ * @param {new Date()} startDate Start date
+ * @param {new Date()} endDate
+ * @param data Data
+ * @returns Object
+ */
+/*exports.loopThroughDateRange = (startDate, endDate, data) => {
+  let dateOne = new Date(startDate);
+  let dateTwo = new Date(endDate);
+  let finalData = [];
+
+  for(var i = dateOne; i<= dateTwo; i.setDate(i.getDate()+1) ){
+    const foundData = data.find(element => {
+      if (+new Date(element.created_at) === +i) {
+        return true;
+      }
+      return false;
+    });
+
+    if (foundData !== undefined) {
+      finalData.push(foundData)
+    } else {
+        finalData.push({
+            'count': 0,
+            'created_at': new Date(i)
+        })
+    }
+  }
+
+return finalData;
+}
+*/
+//const moment = require('moment-timezone');
+
+//const moment = require('moment-timezone');
+
+/*exports.loopThroughDateRange = (startDate, endDate, data) => {
+  let dateOne = moment.tz(startDate, 'America/New_York').startOf('day');
+  let dateTwo = moment.tz(endDate, 'America/New_York').endOf('day');
+  let finalData = [];
+
+  for(let i = dateOne; i.isSameOrBefore(dateTwo); i.add(1, 'days')) {
+    const foundData = data.find(element => {
+      const elementDateEST = moment.tz(element.created_at, 'America/New_York').startOf('day');
+
+      return elementDateEST.isSame(i, 'day');
+    });
+
+    if (foundData !== undefined) {
+      finalData.push(foundData);
+    } else {
+      finalData.push({
+        'count': 0,
+        'created_at': i.format()
+      });
+    }
+  }
+
+  return finalData;
+};*/
+
+/*exports.loopThroughDateRange = (startDate, endDate, data) => {
+  const moment = require('moment-timezone');
+
+  let dateOne = moment(startDate).tz('America/Toronto').startOf('day');
+  let dateTwo = moment(endDate).tz('America/Toronto').startOf('day');
+  let finalData = [];
+
+  for (let i = dateOne; i <= dateTwo; i.add(1, 'day')) {
+    const foundData = data.find(element => {
+      const elementDateToronto = moment(element.created_at).tz('America/Toronto').startOf('day');
+      const iDateToronto = i;
+
+      return elementDateToronto.isSame(iDateToronto);
+    });
+
+    if (foundData !== undefined) {
+      finalData.push(foundData);
+    } else {
+      finalData.push({
+        'count': 0,
+        'created_at': i.toDate()
+      });
+    }
+  }
+
+  return finalData;
+};*/
+
+/* exports.loopThroughDateRange = (startDate, endDate, data) => {
+    const moment = require('moment-timezone');
+  
+    let dateOne = moment.tz(startDate, 'America/Toronto').startOf('day');
+    let dateTwo = moment.tz(endDate, 'America/Toronto').endOf('day');
+    let finalData = [];
+  
+    for (let i = moment.tz(dateOne, 'America/Toronto'); i.isSameOrBefore(dateTwo); i.add(1, 'day')) {
+      const foundData = data.find(element => {
+        const elementDate = moment.tz(element.created_at, 'America/Toronto').startOf('day');
+        return elementDate.isSame(i, 'day');
+      });
+  
+      if (foundData !== undefined) {
+        finalData.push(foundData);
+      } else {
+        finalData.push({
+          'count': 0,
+          'created_at': moment.tz(i.clone(), 'America/Toronto').toDate() 
+        });
+      }
+    }
+  
+   
+    finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  
+    return finalData;
+  };*/
+
+exports.loopThroughDateRange = (startDate, endDate, data) => {
+    try {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+
+        const newData = [];
+        var loop = new Date(start);
+        while (loop <= end) {
+            const obj = {
+                created_at: moment(loop).tz("America/Toronto").format("YYYY-MM-DD"),
+                count: 0,
+            };
+
+            const foundData = data.filter(
+                (element) =>
+                    moment(element._id).format("YYYY-MM-DD") == moment(loop).format("YYYY-MM-DD")
+            );
+
+            if (foundData.length > 0) {
+                obj.count = foundData[0].count;
+            }
+
+            newData.push(obj);
+            var newDate = loop.setDate(loop.getDate() + 1);
+            loop = new Date(newDate);
+        }
+
+        return newData;
+    } catch (error) {
+        console.log(error);
+    }
+
+    // const moment = require("moment-timezone");
+
+    // let dateOne = moment.tz(startDate, "America/Toronto").startOf("day");
+    // let dateTwo = moment.tz(endDate, "America/Toronto").endOf("day");
+    // let finalData = [];
+
+    // for (
+    //     let i = moment.tz(dateOne, "America/Toronto");
+    //     i.isSameOrBefore(dateTwo);
+    //     i.add(1, "day")
+    // ) {
+    //     const foundData = data.find((element) => {
+    //         const elementDate = moment(element.created_at).tz("America/Toronto").startOf("day");
+    //         return elementDate.isSame(i, "day");
+    //     });
+
+    //     if (foundData !== undefined) {
+    //         let obj = {
+    //             created_at: moment(i).tz("America/Toronto").format("YYYY-MM-DD"),
+    //             count: foundData.count,
+    //         };
+    //         finalData.push(obj);
+    //     } else {
+    //         finalData.push({
+    //             created_at: moment(i).tz("America/Toronto").format("YYYY-MM-DD"),
+    //             count: 0,
+    //         });
+    //     }
+    // }
+
+    // finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    // return finalData;
+};
+
+exports.loopThroughDateRange26 = (startDate, endDate, data) => {
+    const moment = require("moment-timezone");
+
+    let dateOne = moment(startDate).tz("America/Toronto").startOf("day");
+    let dateTwo = moment(endDate).tz("America/Toronto").startOf("day");
+    let finalData = [];
+
+    for (let i = dateOne; i <= dateTwo; i.add(1, "day")) {
+        const foundData = data.find((element) => {
+            const elementDateToronto = moment(element.created_at)
+                .tz("America/Toronto")
+                .startOf("day");
+            const iDateToronto = i;
+
+            return elementDateToronto.isSame(iDateToronto);
+        });
+
+        if (foundData !== undefined) {
+            finalData.push(foundData);
+        } else {
+            finalData.push({
+                count: 0,
+                created_at: i.toDate(),
+            });
+        }
+    }
+
+    return finalData;
+};
+
+exports.loopThroughDateRangebi = (startDate, endDate, data) => {
+    //    const moment = require('moment-timezone');
+
+    let dateOne = moment.tz(startDate, "America/Toronto").startOf("day");
+    let dateTwo = moment.tz(endDate, "America/Toronto").endOf("day");
+    let finalData = [];
+
+    for (
+        let i = moment.tz(dateOne, "America/Toronto");
+        i.isSameOrBefore(dateTwo);
+        i.add(1, "day")
+    ) {
+        const foundData = data.find((element) => {
+            const elementDate = moment.tz(element.created_at, "America/Toronto").startOf("day");
+            //	console.log('bibhuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',elementDate)
+            return elementDate;
+        });
+
+        if (foundData !== undefined) {
+            finalData.push(foundData);
+        } else {
+            finalData.push({
+                count: 0,
+                created_at: new Date(i),
+            });
+        }
+    }
+
+    finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    return finalData;
+};
+
+exports.loopThroughDateRange1 = (startDate, endDate, data) => {
+    let dateOne = moment.tz(startDate, "America/Toronto").startOf("day");
+    let dateTwo = moment.tz(endDate, "America/Toronto").endOf("day");
+    let finalData = [];
+
+    for (
+        let m = moment.tz(dateOne, "America/Toronto");
+        m.isSameOrBefore(dateTwo);
+        m.add(1, "day")
+    ) {
+        let i = m.clone();
+        const foundData = data.find((element) => {
+            const elementDate = moment.tz(element.created_at, "America/Toronto").startOf("day");
+            return elementDate.isSame(i, "day");
+        });
+
+        if (foundData !== undefined) {
+            finalData.push(foundData);
+        } else {
+            finalData.push({
+                count: 0,
+                created_at: i.toDate(),
+            });
+        }
+    }
+
+    finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    return finalData;
+};
+
+exports.loopThroughDateRange2 = (startDate, endDate, data) => {
+    const moment = require("moment-timezone");
+
+    let dateOne = moment.tz(startDate, "America/Toronto").startOf("day");
+    let dateTwo = moment.tz(endDate, "America/Toronto").endOf("day");
+    let finalData = [];
+
+    for (
+        let i = moment.tz(dateOne, "America/Toronto");
+        i.isSameOrBefore(dateTwo);
+        i.add(1, "day")
+    ) {
+        const foundData = data.find((element) => {
+            const elementDate = moment.tz(element.created_at, "America/Toronto").startOf("day");
+            return elementDate.isSame(i, "day");
+        });
+
+        if (foundData !== undefined) {
+            foundData.created_at = moment
+                .tz(foundData.created_at, "America/Toronto")
+                .format("YYYY-MM-DD");
+            finalData.push(foundData);
+        } else {
+            finalData.push({
+                count: 0,
+                created_at: moment.tz(i.clone(), "America/Toronto").format("YYYY-MM-DD"),
+            });
+        }
+    }
+
+    finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    return finalData;
+};
+
+exports.loopThroughDateRange11 = (startDate, endDate, data) => {
+    const moment = require("moment-timezone");
+
+    let dateOne = moment.tz(startDate, "America/Toronto").startOf("day");
+    let dateTwo = moment.tz(endDate, "America/Toronto").endOf("day");
+    let finalData = [];
+
+    for (
+        let i = moment.tz(dateOne, "America/Toronto");
+        i.isSameOrBefore(dateTwo);
+        i.add(1, "day")
+    ) {
+        const foundData = data.find((element) => {
+            const elementDate = moment.tz(element.created_at, "America/Toronto").startOf("day");
+            return elementDate.isSame(i, "day");
+        });
+
+        if (foundData !== undefined) {
+            foundData.created_at = moment(foundData.created_at)
+                .utc()
+                .format("YYYY-MM-DD[T]04:00:00.000[Z]");
+            finalData.push(foundData);
+        } else {
+            finalData.push({
+                count: 0,
+                created_at: moment(i.clone()).utc().format("YYYY-MM-DD[T]04:00:00.000[Z]"),
+            });
+        }
+    }
+
+    finalData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    return finalData;
+};

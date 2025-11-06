@@ -1,0 +1,360 @@
+const mongoose = require('mongoose');
+const User = require('../models/user');
+require('../lib/env');
+
+const bcrypt = require('bcrypt');
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => console.error('connection successful'))
+    .catch((err) => console.error(err));
+
+mongoose.set('debug', true);
+
+let hashedPassword;
+
+
+const seedUser = [
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user1@getnada.com',
+    //     user_name: 'user1',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 23,
+    //     gender:'female',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "Jenny",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 1,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user10@getnada.com',
+    //     user_name: 'user10',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 5,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user8@getnada.com',
+    //     user_name: 'user8',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 2,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user3@getnada.com',
+    //     user_name: 'user3',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 3,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user4@getnada.com',
+    //     user_name: 'user4',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 3,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user5@getnada.com',
+    //     user_name: 'user5',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 4,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user6@getnada.com',
+    //     user_name: 'user6',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 1,
+    //     role: 1
+    // },
+    // {
+    //     verified: true,
+    //     email_verified: true,
+    //     email: 'user7@getnada.com',
+    //     user_name: 'user7',
+    //     password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+    //     location: 'India',
+    //     age: 32,
+    //     gender:'male',
+    //     body_type: 'slim',
+    //     ethnicity: 'white',
+    //     first_name: "John",
+    //     last_name: 'Doe',
+    //     step_completed: 4,
+    //     tagline: "Dummy user tag line.",
+    //     description: "Dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_description:"Unverifed dummy user description goes here.Dummy user description goes here.Dummy user description goes here.",
+    //     un_verified_tagline:  "Unverified dummy user tag line.",
+    //     images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     un_verified_images: [
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //         'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+    //     ],
+    //     height: '32',
+    //     is_smoker: "no",
+    //     max_education: 'PG',
+    //     occupation: 'Food Services',
+    //     status: 5,
+    //     role: 1
+    // },
+    {
+        verified: true,
+        email_verified: true,
+        email: 'admin@getnada.com',
+        user_name: 'admin',
+        password: '$2b$10$adrSHjFg0jTo8iWQIoqcgOdkhY87yMuKf47vtospFCypbxJg2IR.O', // password1234
+        location: 'India',
+        age: 32,
+        gender:'female',
+        body_type: 'slim',
+        ethnicity: 'white',
+        first_name: "Sia",
+        last_name: 'Ranjan',
+        step_completed: 3,
+        tagline: "Dummy User",
+        description: "Dummy data for testing",
+        images: [
+            'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+            'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+            'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+            'https://secrettime-cdn.s3.eu-west-2.amazonaws.com/secret-time/uploads/Screenshot%202022-01-17%20at%208.06.04%20PM.png',
+        ],
+        height: '32',
+        is_smoker: "no",
+        max_education: 'PG',
+        role: 2,
+    }
+]
+
+const seedDB = async () => {
+    await User.deleteMany({});
+    await User.insertMany(seedUser);
+};
+
+seedDB().then( () => {
+    mongoose.connection.close();
+});

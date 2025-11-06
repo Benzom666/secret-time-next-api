@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <title> New Insterest, New Message</title>
+  <!-- css -->
+  <style type="text/css">
+    body {
+      margin: 0;
+      background-color: white;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #fff;
+      padding-bottom: 60px;
+    }
+
+    .main {
+      background-color: #F2F5F7;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 650px;
+      border-spacing: 0;
+      font-family: 'Roboto';
+      color: #fff;
+    }
+
+    .column {
+      margin: 2rem auto;
+    }
+
+    .two-column {
+      text-align: center;
+    }
+
+    .two-column .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+    }
+
+    .main-content-btn-section {
+      text-align: center;
+    }
+
+    .footer-icons {
+      text-align: start;
+    }
+
+    .column_1 {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      margin: 5px auto;
+    }
+
+    .footer-text-2 {
+      text-align: start;
+    }
+
+    .main_content_card {
+      width: 542px;
+      height: 200px;
+      background: linear-gradient(168.08deg, #F2F5F7 4.24%, #E6EBEE 94.68%);
+      box-shadow: 3px 3px 5px #D3DADE, -3px -3px 5px 1px rgba(255, 255, 255, 0.6);
+      border-radius: 22px;
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    .main_card {
+      width: 80%;
+      height: 97px;
+      background: #fff;
+      box-shadow: 6px 6px -1px #D3DADE, -6px -6px 10px 1px rgba(255, 255, 255, 0.6);
+      border-radius: 12px;
+      margin: 1rem auto;
+    }
+
+    .card-heading {
+      left: 54px;
+      top: 32px;
+      padding: 1rem 3rem 0 3.5rem
+    }
+
+    #main_header_mob {
+      display: none;
+    }
+
+    #main_header {
+      display: block;
+    }
+
+    @media only screen and (max-width:480px) {
+      #main_header {
+        display: none;
+      }
+
+      #main_header_mob {
+        display: block;
+      }
+
+      .heading,
+      h2 {
+        width: 210px;
+        margin: 1.5rem auto 0 auto;
+      }
+
+      .main-text {
+        width: 260px !important;
+        margin: 1rem auto;
+      }
+
+      .main_content_card {
+        width: 272px !important;
+      }
+
+      .card-heading {
+        left: 32px;
+        top: 32px;
+        padding: 0px !important;
+      }
+
+      .column_1 {
+        width: auto;
+        max-width: initial;
+      }
+
+      .footer-icons,
+      .footer-text-1,
+      .footer-text-2 {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <center class="wrapper">
+    <table class="main" width="100%">
+      <!-- Logo section -->
+      <tr>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="one-column">
+                <table class="column" style="margin:0;width: 100%;">
+                  <tr>
+                    <td style="text-align: center;">
+                      <a>
+                        <img id="main_header" src="<%=process.env.APP_URL%>/Image/Frame43075_old.png" width="100%" height="220px" alt="logo" />
+                      </a>
+                      <a>
+                        <img id="main_header_mob" src="<%=process.env.APP_URL%>/Image/Frame43075.png" width="100%" height="220px" alt="logo" />
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Main-text -->
+      <tr>
+        <td>
+          <h2 class="heading" style=" font-family: 'Roboto';font-style: normal;font-weight: 800;
+                    font-size: 15px;line-height: 18px;text-align: center;color: #1A415C;">
+            The following is a reply to <%= dateTypeWithPrice %> Post
+          </h2>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="main_content_card">
+            <h1 style="position: absolute;font-weight: 700;
+                        font-size: 15px;line-height: 18px;color: #1A415C; padding: 1rem 3rem 0 3.5rem;" class="card-heading"> <%= userName %> </h1>
+            <div class="main_card" style="position: absolute;top:50%; left:50%;transform: translate(-50%,-50%);">
+              <p style=" position: absolute;left: 20px;
+                            top: 0px; font-weight: 400; font-size: 15px;
+                            line-height: 130%; color: #1A415C; padding: 1.5rem;">“<%= message %>”
+              </p>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <a href="<%= host %>/auth/login">
+            <button style="width: 179px;height: 44px;background: #F24462;cursor: pointer;
+                        border-radius: 15px; border:none;margin: 1rem auto 3rem auto;
+                        color: #FFFFFF; font-size: 14px; font-weight: 700;">Reply Back</button>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div style="margin: 0rem auto 2rem auto;">
+            <p class="main-text" style="font-family: 'Roboto';font-style: normal;font-weight: 700;font-size: 11px;line-height: 13px;text-align: center;color: #3A5E77;">
+              Important Le Society Safety notice</p>
+            <p class="main-text" style="font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                            text-align: center;color: #3A5E77; padding: 0px 20px;">
+              Take steps to make sure your experience on Le Society is as safe as possible by reading our
+              <span style="font-size: 12px; font-weight: 700;">safety tips ></span>
+            </p>
+            <p class="main-text" style="font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;text-align: center;color: #3A5E77;">
+              Never provide financial details or send money online.</p>
+          </div>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td style="background-color:black;padding: 50px 10px;">
+          <table width="100%">
+            <tr>
+              <td class="two-column">
+                <table class="column_1" style="vertical-align: bottom; padding: 10px 102px;">
+                  <tr>
+                    <td>
+                      <a> <img src="<%=process.env.APP_URL%>/Image/FooterLogo.png" alt="ls-logo-footer" style="height:46px ;width:64px" /></a>
+                    </td>
+                  </tr>
+                </table>
+                <table class="column_1">
+                  <tr>
+                    <td class="footer-icons">
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Twitter.png" alt='twitter-img' style="height: 23px; text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Insta.png" alt='inst-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/FB.png" alt='fb-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Tiktok.png" alt='tictok-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-1' style="padding-top:6px;  font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                                        color: #FFFFFF;text-align: start;">
+                      FAQ | Safety Tips | Terms | Privacy Settings | Our Story
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-2' style="padding-top:6px;font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;
+                                        line-height: 13px;color: rgba(255, 255, 255, 0.6);">
+                      © 2022 Le Society | All Rights Reserved
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+
+</html>

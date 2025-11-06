@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <title>Verify Email</title>
+  <!-- css -->
+  <style type="text/css">
+    body {
+      margin: 0;
+      background-color: white;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #fff;
+      padding-bottom: 60px;
+    }
+
+    .main {
+      background-color: black;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 650px;
+      border-spacing: 0;
+      font-family: 'Roboto';
+      color: #fff;
+    }
+
+    .column {
+
+      margin: 2rem auto;
+    }
+
+    .two-column {
+      text-align: center;
+    }
+
+    .two-column .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+    }
+
+    .main-content-btn-section {
+      text-align: center;
+    }
+
+    .footer-icons {
+      text-align: start;
+    }
+
+    .column_1 {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      margin: 5px auto;
+    }
+
+    .footer-text-2 {
+      text-align: start;
+    }
+
+    @media only screen and (max-width:480px) {
+      .column_1 {
+        width: auto;
+        max-width: initial;
+      }
+
+      .footer-icons,
+      .footer-text-1,
+      .footer-text-2 {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <center class="wrapper">
+    <table class="main" width="100%">
+      <!-- Logo section -->
+      <tr>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="one-column">
+                <table class="column">
+                  <tr>
+                    <td style="text-align: center;">
+                      <a><img src="<%=process.env.APP_URL%>/Image/Icon-img/LeSocietyIconWhite.png" width="30px" alt="logo" /></a>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td style="text-align: center; padding-top: 0.5rem;">
+                      <a><img src="<%=process.env.APP_URL%>/Image/Icon-img/LeSocietyLogoWhite.png" width="200px" alt="logo-text" /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- Banner Image -->
+      <div style="position: relative;">
+        <tr>
+          <td>
+            <img id="main_Image_web" src="<%=process.env.APP_URL%>/Image/Group_15768.png" alt="background-img" width="650px" style="max-width: 100%;" />
+          </td>
+        <tr>
+          <td style="position: absolute; top:85% ;left:50% ;transform: translate(-50%, -50%);">
+            <h2 style=" font-size: 45px;font-weight: bold;text-transform: capitalize;
+                        text-align: center; margin: 20px 0;">Verify Your Email</h2>
+            <p style="width: 380px;font-size: 14px;font-weight: 400;
+                        text-align: center;margin: 0 auto;">
+              Before we get started, please take a second to make sure we’ve got your email address right.
+            </p>
+            <div style="text-align: center;">
+              <a href='<%= host %>/auth/profile?token=<%= token %>&email=<%= to %>' class="main-content-btn-section" style="margin-top: 0.5rem;">
+                <button type="button" style="font-size: 14px;font-weight: 700;width: 179px;
+                            height: 44px; background: #F24462;color: #fff;border-radius: 15px;
+                            border: none;margin: 1rem auto 0 auto;">Verify Your Email</button>
+              </a>
+            </div>
+
+          </td>
+        </tr>
+        </tr>
+      </div>
+
+      <!-- Main-text -->
+      <tr>
+        <td style="padding: 7rem 0 1rem 0">
+          <p style=" margin: 0 auto; text-align: center; font-size: 11px;font-weight: 400;color: #BABABA;">
+            If you didn’t create a Le Society account,</p>
+          <p style=" margin: 0 auto; text-align: center;font-size: 11px;font-weight: 400;color: #BABABA;">
+            just delete this email and everything will go back to normal.
+          </p>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td style="padding: 50px 10px;">
+          <table width="100%">
+            <tr>
+              <td class="two-column">
+                <table class="column_1" style="vertical-align: bottom; padding: 10px 102px;">
+                  <tr>
+                    <td>
+                      <a> <img src="<%=process.env.APP_URL%>/Image/FooterLogo.png" alt="ls-logo-footer" style="height:46px ;width:64px" /></a>
+                    </td>
+                  </tr>
+                </table>
+                <table class="column_1">
+                  <tr>
+                    <td class="footer-icons">
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Twitter.png" alt='twitter-img' style="height: 23px; text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Insta.png" alt='inst-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/FB.png" alt='fb-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                      <img src="<%=process.env.APP_URL%>/Image/Icon-img/Tiktok.png" alt='tictok-img' style="height: 23px;text-align: start;margin: 0 5px 0 0;" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-1' style="padding-top:6px;  font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;line-height: 13px;
+                                        color: #FFFFFF;text-align: start;">
+                      FAQ | Safety Tips | Terms | Privacy Settings | Our Story
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class='footer-text-2' style="padding-top:6px;font-family: 'Roboto';
+                                        font-style: normal;font-weight: 400;font-size: 11px;
+                                        line-height: 13px;color: rgba(255, 255, 255, 0.6);">
+                      © 2022 Le Society | All Rights Reserved
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+
+</html>
